@@ -127,8 +127,8 @@ function parseSimTime(param) {
 
 // ─── Keyword Matching ─────────────────────────────────────────────────────────
 
-const CANCEL_KW = ["cancelled","canceled","no class","class is off","cancellation","not meeting","will not meet"];
-const VIRTUAL_KW = ["virtual","zoom","online","remote","teams","google meet","webex","held online","online session"];
+const CANCEL_KW = ["cancelled", "canceled", "no class", "class is off", "cancellation", "not meeting", "will not meet"];
+const VIRTUAL_KW = ["virtual", "zoom", "online", "remote", "teams", "google meet", "webex", "held online", "online session"];
 
 function hasKeyword(text, list) {
   const t = text.toLowerCase();
@@ -151,13 +151,17 @@ function enrichSchedule(courses, emails) {
   }
 
   return courses.map((c) => {
-    let status = "in-person", source = null, zoomLink = null;
+    let status = "in-person", source = null, zoomLink = null, statusReason = null;
 
     for (const ann of c.announcements ?? []) {
       const t = `${ann.title} ${ann.body}`;
-      if (hasKeyword(t, CANCEL_KW)) { status = "cancelled"; source = "canvas"; break; }
+      if (hasKeyword(t, CANCEL_KW)) {
+        status = "cancelled"; source = "canvas";
+        statusReason = ann.body.trim(); break;
+      }
       if (hasKeyword(t, VIRTUAL_KW)) {
         status = "virtual"; source = "canvas";
+        statusReason = ann.body.trim();
         zoomLink = extractZoom(t); break;
       }
     }
@@ -165,10 +169,11 @@ function enrichSchedule(courses, emails) {
     if (status === "in-person" && emailMap.has(c.code)) {
       const sig = emailMap.get(c.code);
       status = sig.status; source = "email";
+      statusReason = sig.text.trim();
       if (status === "virtual") zoomLink = extractZoom(sig.text);
     }
 
-    return { ...c, status, statusSource: source, zoomLink };
+    return { ...c, status, statusSource: source, statusReason, zoomLink };
   });
 }
 
@@ -198,10 +203,10 @@ function getMockSchedule() {
   const today = new Date();
   const t = (h, m) => { const d = new Date(today); d.setHours(h, m, 0, 0); return d.toISOString(); };
   return [
-    { id:"crs_101", name:"Introduction to Computer Science", code:"CS 101", instructor:"Dr. Patel", location:"Brubaker Hall 210", startTime:t(9,0), endTime:t(10,15), announcements:[] },
-    { id:"crs_202", name:"Data Structures & Algorithms",     code:"CS 202", instructor:"Prof. Kim",  location:"Brubaker Hall 105", startTime:t(11,0),endTime:t(12,15),announcements:[{ id:"ann_001", title:"Class CANCELLED today", body:"Due to a conference, today's DS&A session is cancelled.", postedAt:t(7,30) }] },
-    { id:"crs_315", name:"Web Application Development",      code:"CS 315", instructor:"Dr. Chen",  location:"Knight Hall 302",   startTime:t(14,0),endTime:t(15,15),announcements:[{ id:"ann_002", title:"Today's class is VIRTUAL — Zoom link inside", body:"Join Zoom: https://arcadia.zoom.us/j/987654321. Held online.", postedAt:t(8,0) }] },
-    { id:"crs_420", name:"Machine Learning Fundamentals",    code:"CS 420", instructor:"Dr. Okoye", location:"Landman Library 101",startTime:t(16,30),endTime:t(17,45),announcements:[] },
+    { id: "crs_101", name: "Introduction to Computer Science", code: "CS 101", instructor: "Dr. Patel", location: "Brubaker Hall 210", startTime: t(9, 0), endTime: t(10, 15), announcements: [] },
+    { id: "crs_202", name: "Data Structures & Algorithms", code: "CS 202", instructor: "Prof. Kim", location: "Brubaker Hall 105", startTime: t(11, 0), endTime: t(12, 15), announcements: [{ id: "ann_001", title: "Class CANCELLED today", body: "Due to a conference, today's DS&A session is cancelled.", postedAt: t(7, 30) }] },
+    { id: "crs_315", name: "Web Application Development", code: "CS 315", instructor: "Dr. Chen", location: "Knight Hall 302", startTime: t(14, 0), endTime: t(15, 15), announcements: [{ id: "ann_002", title: "Today's class is VIRTUAL — Zoom link inside", body: "Join Zoom: https://www.youtube.com/watch?v=xvFZjo5PgG0. Held online.", postedAt: t(8, 0) }] },
+    { id: "crs_420", name: "Machine Learning Fundamentals", code: "CS 420", instructor: "Dr. Okoye", location: "Landman Library 101", startTime: t(16, 30), endTime: t(17, 45), announcements: [] },
   ];
 }
 
@@ -209,8 +214,8 @@ function getMockEmails() {
   const today = new Date();
   const t = (h, m) => { const d = new Date(today); d.setHours(h, m, 0, 0); return d.toISOString(); };
   return [
-    { id:"email_001", from:"prof.kim@arcadia.edu",     subject:"CS 202 — Class Cancelled 3/28",      body:"Today's Data Structures class is cancelled.", receivedAt:t(7,28), courseCode:"CS 202" },
-    { id:"email_002", from:"dr.chen@arcadia.edu",      subject:"CS 315 Going Virtual Today",          body:"Today's Web Dev session will be held virtually over Zoom. https://arcadia.zoom.us/j/987654321", receivedAt:t(7,55), courseCode:"CS 315" },
-    { id:"email_003", from:"registrar@arcadia.edu",    subject:"Spring 2026 Registration Reminder",  body:"Registration opens next Monday.", receivedAt:t(6,0), courseCode:null },
+    { id: "email_001", from: "prof.kim@arcadia.edu", subject: "CS 202 — Class Cancelled 3/28", body: "Today's Data Structures class is cancelled.", receivedAt: t(7, 28), courseCode: "CS 202" },
+    { id: "email_002", from: "dr.chen@arcadia.edu", subject: "CS 315 Going Virtual Today", body: "Today's Web Dev session will be held virtually over Zoom. https://www.youtube.com/watch?v=xvFZjo5PgG0", receivedAt: t(7, 55), courseCode: "CS 315" },
+    { id: "email_003", from: "registrar@arcadia.edu", subject: "Spring 2026 Registration Reminder", body: "Registration opens next Monday.", receivedAt: t(6, 0), courseCode: null },
   ];
 }

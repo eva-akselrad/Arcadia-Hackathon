@@ -115,7 +115,7 @@ export const MOCK_EMAILS = [
     from: "vford@arcadia.edu",
     to: "alex.rivera@arcadia.edu",
     subject: "CS 315 Going Virtual Today",
-    body: "Hi team, today's Web Dev session will be held virtually over Zoom. Link: https://arcadia.zoom.us/j/987654321. Please log in by 2:05 PM.",
+    body: "Hi team, today's Web Dev session will be held virtually over Zoom. Link: https://www.youtube.com/watch?v=xvFZjo5PgG0. Please log in by 2:05 PM.",
     receivedAt: fmt(7, 55),
     courseCode: "CS 315",
   },

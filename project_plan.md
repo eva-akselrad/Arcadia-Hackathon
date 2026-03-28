@@ -1,6 +1,6 @@
 # Arcadia Commuter Assistant - Project Plan
 
-This document ou    tlines the tasks required to build the Arcadia Commuter Assistant application. 
+This document outlines the tasks required to build the Arcadia Commuter Assistant application. 
 The application will be built using HTML/CSS/JS, run serverless on Cloudflare, and utilize Cloudflare databases for user data.
 
 ## Phase 1: Project Setup & Infrastructure
@@ -15,29 +15,31 @@ The application will be built using HTML/CSS/JS, run serverless on Cloudflare, a
 - **Task 2.03:** Develop backend logic that cross-references class schedules with Canvas/Email data to flag classes as cancelled or virtual. ✅ (Done — JS/api.js: getEnrichedSchedule)
 - **Task 2.04:** Integrate a Maps/Traffic API — using OSRM (free, no key required) to calculate driving ETAs. ✅ (Done — JS/api.js: getDrivingETA)
 - **Task 2.05:** Expose secure API endpoints via Cloudflare Workers for the frontend to consume. ✅ (Done — SRC/worker/index.js: /api/dashboard, /api/schedule, /api/eta, /api/health)
-## Phase 3: Frontend - Overview/Homepage
+## Phase 3: Frontend - Overview/Homepage (DONE)
 - **Task 3.01:** Design and develop the homepage layout.
 - **Task 3.02:** Build the `Day's Schedule Overview` component.
 - **Task 3.03:** Build the dynamic `Traffic & ETA Display` component, recommending when the user should leave.
 - **Task 3.04:** Implement the `Main Notification System` to aggressively highlight if a user's next class is cancelled (saving them the drive).
 
-## Phase 4: Frontend - Account Page
+## Phase 4: Frontend - Account Page (FOR FUTURE DEV)
 - **Task 4.01:** Build the `Full Arcadia Schedule` view, including filters to break down the schedule day-by-day.
-- **Task 4.02:** Build the `Location Management` component to allow users to set their starting address     or enable location tracking.
+- **Task 4.02:** Build the `Location Management` component to allow users to set their starting address or enable location tracking.
 - **Task 4.03:** Build the `Map/Google Connectivity Setup` component for authorizing location and map data.
 
-## Phase 5: Frontend - Alert Page
+## Phase 5: Frontend - Alert Page (FOR FUTURE DEV)
 - **Task 5.01:** Build the `Recent Alerts` feed to show a history of notifications.
 - **Task 5.02:** Build the `Upcoming Classes` timeline view.
 - **Task 5.03:** Build the `Cancelled Classes` log for record-keeping.
 
-## Phase 6: Frontend - Settings Page
-- **Task 6.01:** Implement the `Time Format` toggle (12-hour vs 24-hour clock) and link to database preferences.
-- **Task 6.02:** Implement the `Theme Switcher` (Light/Dark) to toggle CSS variables.
-- **Task 6.03:** Add `Notification Preferences` (e.g., SMS alerts, push notifications, email).
-- **Task 6.04:** Add `Account Management` (Clear data, logout functionality).
+## Phase 6: Frontend - Settings Page (DONE)
+- **Task 6.01:** Implement the `Time Format` toggle (12-hour vs 24-hour clock) and link to database preferences. ✅ (Done)
+- **Task 6.02:** Implement the `Theme Switcher` (Light/Dark) to toggle CSS variables. ✅ (Done)
+- **Task 6.03:** Add `Notification Preferences` (e.g., SMS alerts, push notifications, email). ✅ (Done)
+- **Task 6.04:** Add `Account Management` (Clear data, logout functionality). ✅ (Done)
+- **Task 6.05:** Add `About` section with project details and credits. ✅ (Done)
+- **Task 6.06** Add `time to school` section so the user can input how long it takes to get to the school. ✅ (Done)
 
-## Phase 7: Car Integration (Android Auto / Apple CarPlay)
+## Phase 7: Car Integration (Android Auto / Apple CarPlay) (FOR FUTURE DEV)
 - **Task 7.01:** Investigate bridging solutions or PWA templates compatible with Android Auto and Apple CarPlay environments.
 - **Task 7.02:** Design a highly simplified, distraction-free UI view specifically for the car dashboard (showing only ETA, Next Class, and Big Alert banners).
 - **Task 7.03:** Implement car dashboard view routing and data binding.

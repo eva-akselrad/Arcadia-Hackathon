@@ -1,107 +1,179 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description"
+        content="Arcadia Commuter Assistant — Know before you go. Real-time class status, traffic ETA, and commute recommendations for Arcadia University students.">
     <title>Arcadia Commuter Assistant</title>
     <link rel="stylesheet" href="styles/style.css">
 </head>
+
 <body>
     <div class="app-container">
-        
-        <!-- Top Text -->
-        <header class="app-header">
-            <h1 class="sketchy-text" id="greeting-text">Loading…</h1>
-        </header>
 
-        <!-- Main Dashboard View -->
-        <main class="main-content">
+        <!-- HOME VIEW -->
+        <div id="view-home" class="view-section" style="padding-bottom: 90px;">
+            <header class="app-header">
+                <h1 class="app-greeting" id="greeting-text">Loading…</h1>
+            </header>
+
+            <main class="main-content">
+                <div id="main-card">
+                    <div class="card-badge">⏳ Loading…</div>
+                    <h2 class="card-heading" style="font-size:1.5rem">Fetching your schedule</h2>
+                    <p class="card-sub">Checking Canvas &amp; email…</p>
+                </div>
+                <div class="castle-container">
+                    <img src="Public/Images/castle.jpg" alt="Arcadia Castle" class="castle-img"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('no-image'); this.parentElement.innerHTML='<div style=\'padding:10px\'>🏰<br><small>Drop castle.jpg in Public/Images/</small></div>';">
+                </div>
+            </main>
+
+            <div class="road-scene">
+                <div class="car-container">
+                    <svg class="car-svg" viewBox="0 0 100 50" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="20" cy="40" r="8" fill="#111" />
+                        <circle cx="80" cy="40" r="8" fill="#111" />
+                        <rect x="10" y="25" width="80" height="15" rx="5" fill="#e11d48" />
+                        <path d="M 25 25 L 35 10 L 65 10 L 80 25 Z" fill="#e11d48" />
+                        <path d="M 35 12 L 48 12 L 48 25 L 29 25 Z" fill="#bae6fd" />
+                        <path d="M 52 12 L 63 12 L 75 25 L 52 25 Z" fill="#bae6fd" />
+                        <path d="M 85 28 L 90 28 Q 90 32 85 32 Z" fill="#facc15" />
+                        <rect x="10" y="28" width="3" height="5" fill="#fca5a5" />
+                        <circle cx="20" cy="40" r="7" fill="#333" stroke="#94a3b8" stroke-width="2" />
+                        <circle cx="80" cy="40" r="7" fill="#333" stroke="#94a3b8" stroke-width="2" />
+                        <circle cx="20" cy="40" r="2" fill="#cbd5e1" />
+                        <circle cx="80" cy="40" r="2" fill="#cbd5e1" />
+                    </svg>
+                </div>
+                <div class="road">
+                    <div class="road-lines"></div>
+                </div>
+            </div>
             
-            <!-- Red Class @ Time Box -->
-            <div class="red-class-card">
-                <h2>Class @ <br> Time</h2>
-                <div class="card-location">
-                    <span class="sketchy-text">Location</span>
+            <div id="home-widgets"></div>
+        </div>
+
+        <!-- SETTINGS VIEW -->
+        <div id="view-settings" class="view-section" style="display: none;">
+            <header class="app-header" style="padding: 0 0 20px 0;">
+                <h1 class="app-greeting">Settings</h1>
+            </header>
+            
+            <div class="settings-group">
+                <div class="settings-item">
+                    <div class="settings-label">
+                        <strong>Time Format</strong>
+                        <span>Switch between 12-hour and 24-hour clock</span>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="setting-24hr">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                
+                <div class="settings-item">
+                    <div class="settings-label">
+                        <strong>Dark Theme</strong>
+                        <span>Toggle dark mode</span>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="setting-dark">
+                        <span class="slider round"></span>
+                    </label>
                 </div>
             </div>
 
-            <!-- Castle Image (Positioned to the right of the red block) -->
-            <div class="castle-container">
-                <!-- User can replace this with their castle image in Public/Images -->
-                <img src="Public/Images/castle.jpg" alt="Castle" class="castle-img" onerror="this.style.display='none'; this.parentElement.classList.add('no-image'); this.parentElement.innerHTML='<div style=\'padding: 10px;\'>Castle Image Here<br><br><small>Drop your image in Public/Images/castle.jpg</small></div>';">
+            <div class="settings-group">
+                <h3 class="settings-group-title">Commute Settings</h3>
+                <div class="settings-item">
+                    <div class="settings-label">
+                        <strong>Time to School</strong>
+                        <span>Typical commute duration (minutes)</span>
+                    </div>
+                    <div>
+                        <input type="number" id="setting-commute-time" min="0" max="180" value="35" style="width: 70px; padding: 6px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.1); font-family: var(--font-heading); text-align: center; font-size: 0.9rem; background: rgba(255,255,255,0.8); color: #1e293b;">
+                    </div>
+                </div>
             </div>
 
-        </main>
-
-        <!-- The Road and Car Animation -->
-        <div class="road-scene">
-            <!-- The Car -->
-            <div class="car-container">
-                <!-- Premium SVG of a red semi-realistic/modern cute car -->
-                <svg class="car-svg" viewBox="0 0 100 50" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Wheels (Back background) -->
-                    <circle cx="20" cy="40" r="8" fill="#111" />
-                    <circle cx="80" cy="40" r="8" fill="#111" />
-                    
-                    <!-- Car Body Bottom -->
-                    <rect x="10" y="25" width="80" height="15" rx="5" fill="#e11d48" />
-                    
-                    <!-- Car Body Top (Cabin) -->
-                    <path d="M 25 25 L 35 10 L 65 10 L 80 25 Z" fill="#e11d48" />
-                    
-                    <!-- Windows -->
-                    <path d="M 35 12 L 48 12 L 48 25 L 29 25 Z" fill="#bae6fd" />
-                    <path d="M 52 12 L 63 12 L 75 25 L 52 25 Z" fill="#bae6fd" />
-                    
-                    <!-- Headlight / Taillight -->
-                    <path d="M 85 28 L 90 28 Q 90 32 85 32 Z" fill="#facc15" /> <!-- Headlight -->
-                    <rect x="10" y="28" width="3" height="5" fill="#fca5a5" /> <!-- Taillight -->
-
-                    <!-- Front Wheels (Foreground) -->
-                    <circle cx="20" cy="40" r="7" fill="#333" stroke="#94a3b8" stroke-width="2" />
-                    <circle cx="80" cy="40" r="7" fill="#333" stroke="#94a3b8" stroke-width="2" />
-                    <circle cx="20" cy="40" r="2" fill="#cbd5e1" />
-                    <circle cx="80" cy="40" r="2" fill="#cbd5e1" />
-                </svg>
+            <div class="settings-group">
+                <h3 class="settings-group-title">Notifications</h3>
+                <div class="settings-item">
+                    <div class="settings-label">
+                        <strong>Push Notifications</strong>
+                        <span>Receive alerts when classes are cancelled</span>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="setting-push">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="settings-item">
+                    <div class="settings-label">
+                        <strong>SMS Alerts</strong>
+                        <span>Get text messages for urgent changes</span>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="setting-sms">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
             </div>
-            
-            <!-- Road with moving dash line -->
-            <div class="road">
-                <div class="road-lines"></div>
+
+            <div class="settings-group">
+                <h3 class="settings-group-title">Account</h3>
+                <button class="settings-btn" id="btn-clear-data">Clear Local Data</button>
+                <button class="settings-btn btn-danger" id="btn-logout">Logout</button>
+            </div>
+
+            <div class="settings-group" style="text-align: center; margin-top: 40px; margin-bottom: 20px;">
+                <h3 class="settings-group-title" style="margin-bottom: 6px;">About</h3>
+                <p style="font-size: 0.75rem; color: var(--text-muted); line-height: 1.6;">
+                    <strong>Arcadia Commuter Assistant</strong><br>
+                    Know before you go. Real-time class status and traffic ETAs.<br>
+                    Built with ❤️ for the Arcadia Hackathon.<br>
+                    <span style="opacity: 0.7; font-size: 0.7rem;">v1.0.0</span>
+                </p>
             </div>
         </div>
 
-        <!-- Bottom Navigation Bar -->
+        <!-- Bottom Navigation -->
         <nav class="bottom-nav">
-            <!-- Alerts Icon -->
-            <a href="#" class="nav-item">
+            <!-- Alerts -->
+            <a href="#" class="nav-item" id="nav-alerts">
                 <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                     <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
                     <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
                 </svg>
-                <span class="nav-label sketchy-text">Alerts</span>
+                <span class="nav-label">Alerts</span>
             </a>
-            
-            <!-- Account Icon -->
-            <a href="#" class="nav-item active">
+
+            <!-- Home (active) -->
+            <a href="#" class="nav-item active" id="nav-home">
                 <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="12" cy="7" r="4"></circle>
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
                 </svg>
-                <span class="nav-label sketchy-text">Account</span>
+                <span class="nav-label">Home</span>
             </a>
-            
-            <!-- Settings Icon -->
-            <a href="#" class="nav-item">
+
+            <!-- Settings -->
+            <a href="#" class="nav-item" id="nav-settings">
                 <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                     <circle cx="12" cy="12" r="3"></circle>
-                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                    <path
+                        d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+                    </path>
                 </svg>
-                <span class="nav-label sketchy-text">Settings</span>
+                <span class="nav-label">Settings</span>
             </a>
         </nav>
-        
+
     </div>
     <script type="module" src="JS/app.js"></script>
 </body>
+
 </html>

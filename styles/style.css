@@ -14,6 +14,7 @@
 
   /* Backgrounds */
   --bg-primary: #f8fafc;
+  --bg-gradient-start: #ffffff;
   --bg-glass: rgba(255, 255, 255, 0.85);
 
   /* Typography */
@@ -29,6 +30,16 @@
   --shadow-red: 0 20px 40px -10px hsla(var(--hue-brand), var(--sat-brand), 45%, 0.4);
 }
 
+body.dark-mode {
+  --bg-primary: #0f172a;
+  --bg-gradient-start: #1e293b;
+  --bg-glass: rgba(15, 23, 42, 0.85);
+  --text-primary: #f8fafc;
+  --text-muted: #94a3b8;
+  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.6);
+}
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
@@ -37,7 +48,8 @@ body {
   color: var(--text-primary);
   height: 100vh;
   width: 100vw;
-  overflow: hidden; /* Prevent scrolling, act like an app */
+  overflow-x: hidden;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
 }
@@ -49,7 +61,7 @@ body {
   height: 100%;
   width: 100%;
   position: relative;
-  background: radial-gradient(circle at top left, #ffffff, var(--bg-primary));
+  background: radial-gradient(circle at top left, var(--bg-gradient-start), var(--bg-primary));
   box-shadow: var(--shadow-md);
 }
 
@@ -59,7 +71,7 @@ body {
   z-index: 10;
 }
 
-.app-header h1 {
+.app-greeting {
   font-family: var(--font-heading);
   font-size: 1.75rem;
   font-weight: 700;
@@ -73,15 +85,17 @@ body {
   position: relative;
   padding: 0 24px;
   display: flex;
-  align-items: center; 
+  align-items: center;
   justify-content: center;
+  min-height: 240px;
 }
 
-/* The Big Red Card */
-.red-class-card {
+/* The Big Red Card — now #main-card, styled via app.js phase3-styles */
+/* Keep .red-class-card as an alias for backward compat */
+.red-class-card, #main-card {
   width: 90%;
   max-width: 500px;
-  min-height: 300px;
+  min-height: 260px;
   background: linear-gradient(135deg, var(--brand-main), hsl(340, 85%, 40%));
   border-radius: 28px;
   box-shadow: var(--shadow-red);
@@ -92,9 +106,10 @@ body {
   align-items: center;
   z-index: 5;
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  padding: 24px 20px;
 }
 
-.red-class-card:hover {
+.red-class-card:hover, #main-card:hover {
   transform: translateY(-8px) scale(1.02);
 }
 
@@ -154,7 +169,7 @@ body {
 .road-scene {
   position: relative;
   width: 100%;
-  height: 140px;
+  height: 110px;
   margin-bottom: 80px; /* Space for the bottom nav */
   display: flex;
   flex-direction: column;
@@ -211,7 +226,7 @@ body {
 
 /* Bottom Navigation */
 .bottom-nav {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;

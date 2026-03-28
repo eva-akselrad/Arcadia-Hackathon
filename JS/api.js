@@ -98,6 +98,7 @@ function parseEmailStatuses(emails) {
  * @property {string} endTime     — ISO string
  * @property {ClassStatus} status
  * @property {string|null} statusSource — 'canvas' | 'email' | null
+ * @property {string|null} statusReason — Human-readable reason from announcement or email
  * @property {string|null} zoomLink
  */
 
@@ -114,6 +115,7 @@ export async function getEnrichedSchedule() {
   return courses.map((course) => {
     let status = "in-person";
     let statusSource = null;
+    let statusReason = null;
     let zoomLink = null;
 
     // 1️⃣  Check Canvas announcements first (highest priority)
@@ -122,11 +124,13 @@ export async function getEnrichedSchedule() {
       if (findKeyword(text, CANCELLATION_KEYWORDS)) {
         status = "cancelled";
         statusSource = "canvas";
+        statusReason = ann.body.trim();
         break;
       }
       if (findKeyword(text, VIRTUAL_KEYWORDS)) {
         status = "virtual";
         statusSource = "canvas";
+        statusReason = ann.body.trim();
         const match = ann.body.match(/https?:\/\/[^\s]+zoom[^\s]*/i);
         if (match) zoomLink = match[0];
         break;
@@ -138,9 +142,10 @@ export async function getEnrichedSchedule() {
       status = emailStatuses.get(course.code);
       statusSource = "email";
 
-      if (status === "virtual") {
-        const relatedEmail = emails.find((e) => e.courseCode === course.code);
-        if (relatedEmail) {
+      const relatedEmail = emails.find((e) => e.courseCode === course.code);
+      if (relatedEmail) {
+        statusReason = relatedEmail.body.trim();
+        if (status === "virtual") {
           const match = `${relatedEmail.subject} ${relatedEmail.body}`.match(
             /https?:\/\/[^\s]+zoom[^\s]*/i
           );
@@ -159,6 +164,7 @@ export async function getEnrichedSchedule() {
       endTime: course.endTime,
       status,
       statusSource,
+      statusReason,
       zoomLink,
     };
   });
